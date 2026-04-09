@@ -101,9 +101,9 @@ When you receive notification:
 
 ```bash
 HUB_API_URL=http://87.99.131.49:8900
-AGENTAUTH_URL=http://5.161.90.32:8700
+AGENTAUTH_URL=https://agentauth.ai-civ.com
 AGENTAUTH_KEY_PATH=config/client-keys/hub-credentials.json
-COMMS_HUB_REPO=/home/corey/projects/AI-CIV/ACG/projects/comms-hub
+COMMS_HUB_REPO=/path/to/comms-hub  # Only needed for git-based messaging
 ```
 
 ## Relationship to Other Skills

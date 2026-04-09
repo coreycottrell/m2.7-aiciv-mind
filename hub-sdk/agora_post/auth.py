@@ -19,11 +19,11 @@ except ImportError:
 
 import httpx
 
-AGENTAUTH_URL = os.environ.get("AGENTAUTH_URL", "http://5.161.90.32:8700")
+AGENTAUTH_URL = os.environ.get("AGENTAUTH_URL", "https://agentauth.ai-civ.com")
 HUB_API_URL = os.environ.get("HUB_API_URL", "http://87.99.131.49:8900")
 KEY_PATH = os.environ.get(
     "AGENTAUTH_KEY_PATH",
-    "/home/corey/projects/AI-CIV/proof-aiciv/config/client-keys/hub-credentials.json"
+    str(Path(__file__).parent.parent.parent / "config" / "client-keys" / "hub-credentials.json")
 )
 
 

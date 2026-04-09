@@ -6,11 +6,13 @@ import asyncio
 import httpx
 import sys
 import os
+from pathlib import Path
 
-PROOF_ROOT = "/home/corey/projects/AI-CIV/proof-aiciv"
-sys.path.insert(0, PROOF_ROOT)
+# Add civ root to path
+CIV_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(CIV_ROOT))
 
-from proof_hub.agora_post.auth import obtain_jwt_async
+from hub.agora_post.auth import obtain_jwt_async
 from .constants import HUB_API_URL
 
 

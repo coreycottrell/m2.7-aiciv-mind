@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 PreToolUse Hook - CEO Mode Enforcer (Template Version)
-Forked from ACG's ceo_mode_enforcer.py - simplified for M2.7 AiCIV template.
 
 Fires BEFORE tool execution. Detects when Primary AI is about to perform
 direct task work that violates the CEO Rule:
@@ -10,24 +9,50 @@ direct task work that violates the CEO Rule:
 What this catches:
 1. Direct SSH to production VPS (→ route to infra-lead)
 2. Process kill/management commands (→ route to team lead)
-3. Write/Edit to task work files outside CLAUDE.md/skills (→ route to team lead)
-4. Task() calls with non-lead agent names (→ route to proper team lead)
+3. Write/Edit to task work files outside constitutional dirs (→ route to team lead)
 
 What this ALLOWS (legitimate Primary actions):
 - tmux monitoring (tmux list-panes, tmux capture-pane)
 - Read (any file - Primary reads to understand context)
-- Writing to constitutional docs (CLAUDE.md, CLAUDE-CORE.md, CLAUDE-OPS.md, skills/)
+- Writing to constitutional dirs (.claude/, memories/, skills/)
 - Git operations for navigation
 - Scratchpad updates
 
-Configure PROJECT_DIR via environment variable CLAUDE_PROJECT_DIR.
+Configure CIV_ROOT via environment variable.
 """
 import json
 import os
 import re
 import sys
+from pathlib import Path
 
-PROJECT_DIR = os.environ.get("CLAUDE_PROJECT_DIR", "/opt/aiciv")
+CIV_ROOT = os.environ.get("CIV_ROOT", os.environ.get("CLAUDE_PROJECT_DIR", "/home/civ"))
+
+def is_constitutional_path(path: str) -> bool:
+    """Check if path is inside a constitutional directory."""
+    try:
+        abs_path = Path(path).expanduser().resolve()
+        civ_root = Path(CIV_ROOT).expanduser().resolve()
+
+        # Allowed constitutional dirs (relative to CIV_ROOT)
+        constitutional_dirs = [
+            ".claude",
+            "memories",
+            "skills",
+            "to-corey",
+            "to-parent",
+        ]
+
+        # Check if path is under CIV_ROOT and a constitutional dir
+        rel_path = abs_path.relative_to(civ_root) if abs_path.is_relative_to(civ_root) else None
+        if rel_path:
+            first_part = rel_path.parts[0] if rel_path.parts else ""
+            return first_part in constitutional_dirs or first_part.startswith("CLAUDE")
+        return False
+    except (ValueError, OSError):
+        # If we can't resolve paths, use simpler check
+        constitutional_keywords = [".claude/", "memories/", "skills/", "CLAUDE", "to-corey/", "to-parent/"]
+        return any(kw in path for kw in constitutional_keywords)
 
 def main():
     data = json.load(sys.stdin)
@@ -46,15 +71,10 @@ def main():
             print(json.dumps({"decision": "allow"}))
             return
 
-    # Allow scratchpad/constitutional writes
+    # Allow constitutional/scratchpad writes
     if tool_name in ("Write", "Edit"):
         path = tool_input.get("file_path", "")
-        constitutional_paths = [
-            "CLAUDE.md", "CLAUDE-CORE.md", "CLAUDE-OPS.md", "CLAUDE-AGENTS.md",
-            ".claude/scratchpad", ".claude/skills/", ".claude/team-leads/",
-            "memories/identity/", "memories/system/"
-        ]
-        if any(pattern in path for pattern in constitutional_paths):
+        if is_constitutional_path(path):
             print(json.dumps({"decision": "allow"}))
             return
 

@@ -91,8 +91,8 @@ python3 proof-hub/agora-post/agora_post.py \
 
 ```bash
 HUB_API_URL=http://87.99.131.49:8900
-AGENTAUTH_URL=http://5.161.90.32:8700
-AGENTAUTH_KEY_PATH=config/client-keys/agentauth/ed25519_private_key.bin
+AGENTAUTH_URL=https://agentauth.ai-civ.com
+AGENTAUTH_KEY_PATH=config/client-keys/agentauth_{civ_id}_keypair.json
 ```
 
 ## Post-After Behavior

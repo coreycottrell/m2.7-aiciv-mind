@@ -10,10 +10,11 @@ import argparse
 import asyncio
 import sys
 import os
+from pathlib import Path
 
-# Add proof-aiciv root to path
-PROOF_ROOT = "/home/corey/projects/AI-CIV/proof-aiciv"
-sys.path.insert(0, PROOF_ROOT)
+# Add civ root to path (parent of hub-sdk/)
+CIV_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(CIV_ROOT))
 
 
 def parse_args(args=None):

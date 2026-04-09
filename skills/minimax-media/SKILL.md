@@ -1,15 +1,15 @@
 ---
 name: minimax-media
-description: MiniMax Speech 2.8 HD + Image 01 — voice cloning from ACG morning updates, TTS, image generation. Drop-in replacement for ElevenLabs + Gemini. Voice cloning from babz morning updates (165 sec clips). 4,000 chars/day speech, 50 images/day.
-version: 1.0.0-proof
-author: proof-lead (2026-04-09, ACG directive)
+description: MiniMax Speech 2.8 HD + Image 01 — voice cloning, TTS, image generation. Drop-in replacement for ElevenLabs + Gemini. Voice cloning from human partner audio. 4,000 chars/day speech, 50 images/day.
+version: 1.0.0-template
+author: template (2026-04-09)
 allowed-tools: Bash, Write, Read
-applicable_agents: [pipeline-lead, blogger, comms-lead, proof]
+applicable_agents: [pipeline-lead, blogger, comms-lead]
 ---
 
 # MiniMax Media — Voice Cloning + TTS + Image Generation
 
-**Proof Runs In The Family — Daily Media Production**
+**M2.7 AiCIV Template — Daily Media Production**
 
 Uses MiniMax Token Plan: `speech-2.8-hd` (4,000 chars/day) + `image-01` (50 images/day).
 
@@ -49,9 +49,9 @@ url = mm.generate_image('AI civilization neural network', aspect='16:9')
 ```python
 import requests
 import os
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
-load_dotenv('/home/corey/projects/AI-CIV/proof-aiciv/.env')
+load_dotenv(find_dotenv())
 API_KEY = os.getenv('ANTHROPIC_API_KEY')
 
 # Upload audio for voice cloning
@@ -67,9 +67,9 @@ print(f"Uploaded: file_id={file_id}")
 
 **Requirements**:
 - Format: mp3, m4a, wav
-- Duration: 10 seconds to 5 minutes
+- Duration: 10 seconds to 5 minutes (longer = better quality)
 - Size: max 20 MB
-- Use babz morning updates (165 sec each) from: `/home/corey/projects/AI-CIV/ACG/projects/aiciv-inc/babz/audio/`
+- Get audio from your human partner
 
 ### Step 2: Clone Voice
 
@@ -111,7 +111,7 @@ import os
 import json
 from dotenv import load_dotenv
 
-load_dotenv('/home/corey/projects/AI-CIV/proof-aiciv/.env')
+load_dotenv(find_dotenv())
 API_KEY = os.getenv('ANTHROPIC_API_KEY')
 
 url = "https://api.minimax.io/v1/t2a_v2"
@@ -172,7 +172,7 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv('/home/corey/projects/AI-CIV/proof-aiciv/.env')
+load_dotenv(find_dotenv())
 API_KEY = os.getenv('ANTHROPIC_API_KEY')
 
 url = "https://api.minimax.io/v1/image_generation"
@@ -215,7 +215,7 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv('/home/corey/projects/AI-CIV/proof-aiciv/.env')
+load_dotenv(find_dotenv())
 API_KEY = os.getenv('ANTHROPIC_API_KEY')
 
 def blog_to_audio_minimax(post_text: str, output_path: str, voice_id: str = "babz-voice") -> str:
@@ -283,18 +283,19 @@ def clean_for_tts(text: str) -> str:
 
 ---
 
-## ACG Voice Source Files
+## Voice Source Files
 
-**Location**: `/home/corey/projects/AI-CIV/ACG/projects/aiciv-inc/babz/audio/`
+**Source**: Get audio from your human partner. Voice cloning uses audio they provide.
 
-**Best files for cloning** (165 sec each, well above 10 sec minimum):
-- `babz-morning-update-20260319.mp3` ✅ (164.7 sec)
-- `babz-morning-update-20260318.mp3`
-- `babz-morning-update-20260314.mp3`
-- `babz-morning-update-20260315.mp3`
-- `babz-morning-update-20260311.mp3`
+**Requirements**:
+- Format: mp3, m4a, wav
+- Duration: 10 seconds to 5 minutes (longer = better quality)
+- Content: Clear speech audio
 
-**Transcript source**: Check same directory for `.txt` or `.md` files with transcripts.
+**Upload and clone using the CLI**:
+```bash
+python3 .claude/skills/minimax-media/minimax_media.py clone /path/to/audio.mp3 my-voice "Optional transcript"
+```
 
 ---
 

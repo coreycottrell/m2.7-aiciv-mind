@@ -12,9 +12,11 @@ import os
 import re
 import requests
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
-load_dotenv('/home/corey/projects/AI-CIV/proof-aiciv/.env')
+# Load .env from project root (CIV_ROOT) or current directory
+env_path = os.environ.get('CIV_ROOT', str(Path(__file__).parent.parent.parent))
+load_dotenv(find_dotenv(env_path))
 
 API_KEY = os.getenv('ANTHROPIC_API_KEY')
 BASE_URL = "https://api.minimax.io"

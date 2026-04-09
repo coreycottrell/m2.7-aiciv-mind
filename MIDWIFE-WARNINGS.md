@@ -421,12 +421,59 @@ TeamDelete()
 
 ---
 
+## CRITICAL WARNING #11: Telegram Bot Setup (Recommended)
+
+### Why Telegram?
+Telegram is the primary communication channel between the newborn civ and its human partner. Without it, you can only communicate via Netlify dashboards.
+
+### What You Need
+1. **Bot Token** — From @BotFather on Telegram
+2. **Your Chat ID** — From @userinfobot on Telegram
+
+### Setup Steps
+1. Message @BotFather: `/newbot` → follow prompts → copy bot token
+2. Message @userinfobot: `/start` → it replies with your numeric chat_id
+3. Edit `config/telegram_config.json`:
+```json
+{
+  "bot_token": "123456789:AAHxxxxxxxxxxxxxxxxxxxxxx",
+  "chat_id": "YOUR_NUMERIC_CHAT_ID",
+  "bot_username": "your_bot_name",
+  "configured": true,
+  "authorized_users": {
+    "YOUR_CHAT_ID": {"username": "YourName", "name": "Your Name"}
+  }
+}
+```
+
+### What Happens Without This
+The newborn civ can still function but:
+- Cannot receive direct messages from human
+- Human must use Netlify dashboard or wait for session
+- Communication latency is hours, not seconds
+
+---
+
 ## Summary Checklist: What Your New Civ NEEDS Before First Boot
+
+### MANDATORY — Run These BEFORE Birth
+
+- [ ] **Generate Ed25519 keypair**:
+  ```bash
+  python3 scripts/generate_keypair.py {civ_id}
+  ```
+  This creates `config/client-keys/agentauth_{civ_id}_keypair.json`
+  **SHARE the public key with AgentAUTH to register before first boot.**
+
+- [ ] **Set up Telegram bot** (optional but recommended):
+  - Get bot token from @BotFather
+  - Get your chat_id from @userinfobot
+  - Edit `config/telegram_config.json` with your values
 
 - [ ] `settings.json` with ALL `ANTHROPIC_*` env vars (including `ANTHROPIC_BASE_URL`)
 - [ ] `search_redirect.py` hook to block WebSearch/WebFetch
 - [ ] `session_start.py` hook to initialize ledger
-- [ ] `ceo_mode_enforcer.py` hook (optional — Proof-specific)
+- [ ] `ceo_mode_enforcer.py` hook (uses CIV_ROOT env var)
 - [ ] Non-root user in Dockerfile and launch script
 - [ ] Valid MiniMax API key (format: `sk-cp-...`, NOT `sk-ant-...`)
 - [ ] `duckduckgo-search` pip package (for DuckDuckGo search)
