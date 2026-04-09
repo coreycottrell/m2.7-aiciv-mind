@@ -22,9 +22,9 @@ def main():
                 "WebSearch does not work on M2.7 (requires Anthropic backend). "
                 "Use one of these instead:\n"
                 "1. MiniMax MCP: mcp__MiniMax__web_search(query=\"your query\")\n"
-                "2. Bash: python3 -c \"from duckduckgo_search import DDGS; "
+                "2. Bash: python3 -c \"from duckduckgo_search import DuckDuckGoSearch; "
                 "[print(f'{r[\\\"title\\\"]}: {r[\\\"href\\\"]}') "
-                "for r in DDGS().text('your query', max_results=5)]\"\n"
+                "for r in DuckDuckGoSearch().text('your query', max_results=5)]\"\n"
                 "3. Read the skill: .claude/skills/web-search-override/SKILL.md"
             )
         }))

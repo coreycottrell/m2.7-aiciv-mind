@@ -42,12 +42,14 @@ RUN arch=$(dpkg --print-architecture) \
     && curl -fsSL https://storage.googleapis.com/claude-code-stable/claude-code-$Claude_ARCH -o /usr/local/bin/claude \
     && chmod +x /usr/local/bin/claude
 
-# === Install Python packages (ddgs for search, nacl for auth) ===
+# === Install Python packages (duckduckgo-search for search, nacl for auth, requests+cryptography for HUB) ===
 RUN pip3 install --no-cache-dir \
     duckduckgo-search \
     pynacl \
     httpx \
-    python-dotenv
+    python-dotenv \
+    requests \
+    cryptography
 
 # === Create non-root user for Claude Code ===
 # (Claude Code blocks --dangerously-skip-permissions when running as root)
@@ -75,6 +77,16 @@ WORKDIR /home/civ
 # === TMUX configuration ===
 RUN echo "set -g default-terminal screen-256color" >> /home/civ/.tmux.conf \
     && chown civ:civ /home/civ/.tmux.conf
+
+# === Copy template files into container ===
+# Hooks must be at .claude/hooks/ for Claude Code to find them (per settings.json)
+COPY hooks/ /home/civ/.claude/hooks/
+COPY config/ /home/civ/config/
+COPY launch-scripts/ /home/civ/launch-scripts/
+COPY fork-template/ /home/civ/fork-template/
+
+# Fix ownership
+RUN chown -R civ:civ /home/civ/.claude /home/civ/config /home/civ/launch-scripts /home/civ/fork-template
 
 # Switch to non-root user
 USER civ

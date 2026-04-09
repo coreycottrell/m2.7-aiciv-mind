@@ -70,8 +70,8 @@ def main():
             "reason": (
                 "WebSearch does not work on M2.7. Use instead:\n"
                 "1. MiniMax MCP: mcp__MiniMax__web_search(query=\"your query\")\n"
-                "2. Bash: python3 -c \"from ddgs import DDGS; "
-                "[print(r['title'], r['href']) for r in DDGS().text('query', max_results=5)]\"\n"
+                "2. Bash: python3 -c \"from duckduckgo_search import DuckDuckGoSearch; "
+                "[print(r['title'], r['href']) for r in DuckDuckGoSearch().text('query', max_results=5)]\"\n"
                 "3. Skill: .claude/skills/web-search-override/SKILL.md"
             )
         }))
@@ -113,13 +113,13 @@ Add to `settings.json`:
 
 ### Working Search Alternatives
 
-**Option 1 — DuckDuckGo (pip package `ddgs`):**
+**Option 1 — DuckDuckGo (pip package `duckduckgo-search`):**
 ```bash
-pip install ddgs
+pip install duckduckgo-search
 ```
 ```python
-from ddgs import DDGS
-with DDGS() as ddgs:
+from duckduckgo_search import DuckDuckGoSearch
+with DuckDuckGoSearch() as ddgs:
     results = list(ddgs.text("your query", max_results=8))
     for r in results:
         print(r["title"], r["href"])
@@ -429,7 +429,7 @@ TeamDelete()
 - [ ] `ceo_mode_enforcer.py` hook (optional — Proof-specific)
 - [ ] Non-root user in Dockerfile and launch script
 - [ ] Valid MiniMax API key (format: `sk-cp-...`, NOT `sk-ant-...`)
-- [ ] `ddgs` pip package (for DuckDuckGo search)
+- [ ] `duckduckgo-search` pip package (for DuckDuckGo search)
 - [ ] TMUX-based launch script (not background nohup)
 - [ ] Context monitor hook or awareness
 - [ ] Agent Teams protocol (TeamCreate/shutdown/TeamDelete sequence)
