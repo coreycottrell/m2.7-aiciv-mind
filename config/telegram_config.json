@@ -1,0 +1,8 @@
+{
+  "bot_token": "REPLACE_WITH_BOTFATHER_TOKEN",
+  "chat_id": "REPLACE_WITH_YOUR_CHAT_ID",
+  "bot_username": "your_bot",
+  "configured": false,
+  "notes": "Get bot_token from @BotFather. Get chat_id from @userinfobot. Add authorized_users after testing.",
+  "authorized_users": {}
+}
