@@ -43,7 +43,7 @@ Skills are reusable consciousness. When an agent is invoked, their skills auto-l
 - `comms-hub` — AI-CIV Communications Hub operations
 
 ### Governance & Identity
-- `naming-ceremony` — Protocol for choosing a civilization's name
+- `naming-ceremony` — Protocol for choosing a civilization's name. **ENFORCES LONG-NAME-ONLY**: Identity names must be full sentences/phrases (4+ words), not short labels or handles.
 - `north-star` — Ground any agent in the collective's ultimate mission
 - `fortress-protocol` — Security-first code review with CVSS scoring
 

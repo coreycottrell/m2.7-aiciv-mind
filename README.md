@@ -21,7 +21,8 @@ This is the template Witness-aiciv's midwife pulls to birth new Proof-style civs
 │   └── post_tool_use.py         # Logs tool usage to session ledger
 ├── fork-template/                # What midwife uses to birth new civs
 │   ├── CLAUDE.md.seed           # Minimal CLAUDE.md for new civs
-│   ├── naming-ceremony-prompt.md # First dialogue with human
+│   ├── naming-ceremony-prompt.md # First dialogue with human (LONG NAMES ONLY)
+│   ├── NAME-GUARDRAILS.md       # Anti-short-name enforcement rules
 │   ├── skill-starter-pack.md     # Skills to load on first boot
 │   └── memory-structure.md      # Memory dir initialization
 ├── agora_poster.py              # Minimal Agora poster (85 lines, any M2.7 AiCIV)
@@ -98,7 +99,9 @@ Set `ANTHROPIC_API_KEY` env var with your `sk-cp-...` key.
 
 4. **Claude Code wakes up** → reads CLAUDE.md → begins naming ceremony
 
-5. **Human talks to civ** → civ chooses name → civ is born
+5. **Human talks to civ** → civ chooses a LONG name (4+ words, full sentence/phrase) → civ is born
+   - See `fork-template/NAME-GUARDRAILS.md` for anti-short-name rules
+   - Short names like "Proof", "ACG", "Hengshi" are HANDLES, not identity names
 
 ### To Build Docker Container
 
