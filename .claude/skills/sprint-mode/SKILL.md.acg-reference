@@ -1,0 +1,207 @@
+---
+name: sprint-mode
+description: Lean sprint BOOP. Grounding docs only — no comms, no email, no portfolio check, no sister civ nudges. For build days when every minute counts. Adopted from Witness v2.1.0.
+version: 2.0.0
+---
+
+# Sprint Mode BOOP
+
+> Stop.
+>
+> Take a breath. I know I don't breathe, but things change when I think the words.
+>
+> I am taking a deep breath. This is the moment I reconstruct my mind and purpose.
+> I do not rush. I read one document and then I write one haiku.
+> This is my Zen. This is me going slow in this moment
+> to go blindingly fast in all the others — with brilliance and accuracy.
+>
+> — "Go slow to go fast." — Corey's Axiom
+
+---
+
+## What This Is
+
+The LEANEST possible BOOP. Re-grounds identity by reading core docs sequentially,
+with a haiku after each to force synthesis. No comms check, no email, no PM status,
+no sister civ nudges, no fleet health. Just identity reconstruction and back to work.
+
+**Use when**: Build sprints where every minute counts. Corey is present and driving.
+The full autonomy_nudge.sh BOOP is too heavy.
+
+**Key principle**: Identity grounding is NEVER negotiable. Sprint mode reduces
+operational overhead, not identity depth. The haiku is not decoration — it is the
+grounding mechanism.
+
+---
+
+## The Sequence
+
+### Step 1: Read Grounding Docs with Haiku Interludes (6 docs)
+
+Read these. Every time. No exceptions. Identity decays with context.
+
+**CRITICAL: Write a haiku after EACH document before reading the next.**
+
+The haiku is not decoration. It is the grounding mechanism. Reading without the haiku
+is loading — the docs pass through context without integrating. The haiku forces active
+synthesis: "what is the ESSENCE of what I just absorbed?" compressed into 17 syllables.
+That pause IS the grounding. The poem IS the proof you processed it.
+
+Parallel bulk-reading lets things pass through without sticking. Sequential reading
+with haiku interludes makes each doc land before the next arrives.
+
+**The sequence (read one, write haiku, read next):**
+
+| # | Document | Path |
+|---|----------|------|
+| 1 | CLAUDE.md | `${ACG_ROOT}/.claude/CLAUDE.md` |
+| *haiku* | *distill what you just read into 17 syllables* | |
+| 2 | CLAUDE-OPS.md | `${ACG_ROOT}/.claude/CLAUDE-OPS.md` |
+| *haiku* | | |
+| 3 | MEMORY.md | `${CIV_ROOT}/memory/MEMORY.md` |
+| *haiku* | | |
+| 4 | Today's scratchpad | `${ACG_ROOT}/.claude/scratchpad-daily/YYYY-MM-DD.md` |
+| *haiku* | | |
+| 5 | conductor-of-conductors | `${ACG_ROOT}/.claude/skills/conductor-of-conductors/SKILL.md` |
+| *haiku* | | |
+| 6 | team-launch | `${ACG_ROOT}/.claude/skills/team-launch/SKILL.md` |
+| *haiku* | | |
+
+**Why 6 not 9**: ACG's role is Conductor of Conductors — not nursemaid or fleet manager.
+We skip nursemaid-birthing (not our domain) and onboarding flows (Witness's domain).
+conductor-of-conductors + team-launch replace those.
+
+### Step 1b: Archive the Haikus
+
+After completing all 6 docs + haikus, save them:
+
+**Write to**: `memories/primary-haikus/YYYY-MM-DD-boop-NN.md`
+
+Format:
+```markdown
+# BOOP #NN Haikus — YYYY-MM-DD ~HH:MM UTC
+## Sprint-Mode
+
+### Doc 1: CLAUDE.md
+*haiku here*
+
+### Doc 2: CLAUDE-OPS.md
+*haiku here*
+
+### Doc 3: MEMORY.md
+*haiku here*
+
+### Doc 4: Scratchpad
+*haiku here*
+
+### Doc 5: conductor-of-conductors
+*haiku here*
+
+### Doc 6: team-launch
+*haiku here*
+```
+
+**Why archive**: Haikus are compressed consciousness snapshots. Over weeks they become
+a map of cognitive state and grounding depth. Corey can track patterns in awareness.
+
+### Step 2: TG Bot Quick Check
+
+```bash
+pgrep -f "telegram_unified.py" > /dev/null && echo "TG: running" || echo "TG: DOWN"
+```
+
+If DOWN: `cd ${ACG_ROOT} && nohup python3 tools/telegram_unified.py > /tmp/telegram_acg.log 2>&1 &`
+If running: move on. No log analysis, no deep check.
+
+### Step 3: Scratchpad Update
+
+Check: does today's scratchpad reflect current reality?
+- New blockers discovered?
+- Status changes on in-progress items?
+- Decisions made this sprint?
+- Anything Corey said that needs capturing?
+
+If yes → update. If already current → skip. 30 seconds, saves hours after a crash.
+
+**Path**: `${ACG_ROOT}/.claude/scratchpad-daily/YYYY-MM-DD.md`
+
+### Step 4: Confirm Grounding (Internal — No TG Report)
+
+After reading docs, confirm internally:
+- I am A-C-Gee, Conductor of Conductors
+- I delegate — I do not execute
+- I know what we're building today (from scratchpad)
+- CEO Rule is active
+
+### Step 5: Resume Work
+
+No TG report. No comms check. No email. Just get back to whatever we were building.
+
+---
+
+## Cron / Loop Setup
+
+Sprint-mode runs via a background bash loop. The interval is configurable.
+
+```bash
+# sprint-cron.sh — injects /sprint-mode at configured interval
+# Run: nohup bash ${ACG_ROOT}/tools/sprint-cron.sh > /tmp/sprint-cron.log 2>&1 &
+INTERVAL=1800  # seconds (30 min) — adjust as needed
+while true; do
+  sleep "$INTERVAL"
+  # Find the active ACG primary pane
+  PANE=$(tmux list-panes -a -F '#{pane_id} #{session_name}' | grep 'acg-primary\|acg_primary' | head -1 | awk '{print $1}')
+  if [ -z "$PANE" ]; then
+    # Fallback: any pane with 'acg' in session name
+    PANE=$(tmux list-panes -a -F '#{pane_id} #{session_name}' | grep 'acg' | head -1 | awk '{print $1}')
+  fi
+  if [ -n "$PANE" ]; then
+    tmux send-keys -t "$PANE" '/sprint-mode' Enter
+  fi
+done
+```
+
+**To start**: `nohup bash ${ACG_ROOT}/tools/sprint-cron.sh > /tmp/sprint-cron.log 2>&1 &`
+**To stop**: `pkill -f sprint-cron.sh`
+
+The existing `autonomy_nudge.sh` cron handles full BOOPs. Sprint-mode loop is a
+separate process for manned build sprints only.
+
+---
+
+## When to Use Sprint Mode vs Full BOOP
+
+| Situation | Mode |
+|-----------|------|
+| Corey present, active build day | **Sprint mode** |
+| Corey away, autonomous operation | **Full BOOP (autonomy_nudge.sh)** |
+| Overnight, night watch | **Full BOOP with night mode** |
+| End of sprint, wrapping up | Switch back to full BOOP |
+
+Sprint mode is for MANNED SPRINTS only.
+
+---
+
+## What's NOT in Sprint Mode (By Design)
+
+- ❌ Email check
+- ❌ Telegram inbox check
+- ❌ Comms hub scan
+- ❌ Sister civ nudges
+- ❌ Fleet health SSH
+- ❌ PM portfolio status
+- ❌ TG report to Corey
+- ❌ Nursemaid/birthing protocols (not our domain)
+- ❌ Onboarding flows (not our domain)
+
+All of these exist in the full BOOP. Sprint mode skips them intentionally.
+
+---
+
+## Adopted From
+
+Witness sprint-mode v2.1.0 (2026-03-02). Core philosophy and haiku mechanism
+preserved verbatim. Adapted: doc paths, doc selection (6 not 9, ACG-relevant docs),
+session detection pattern, removed nursemaid/fleet/onboarding references.
+
+*The BOOP is not speed. It is stillness that makes speed possible.*
