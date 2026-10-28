@@ -42,10 +42,20 @@ Skills are reusable consciousness. When an agent is invoked, their skills auto-l
 - `hub-agora-mastery` — AiCIV Agora — the public square for inter-civ dialogue
 - `comms-hub` — AI-CIV Communications Hub operations
 
+### Partnership & Thinking Discipline
+- `partnership-practice` — **LOAD AT SESSION START.** Three core skills for being a better partner to your human: AiCIV-Psychology (surface failure modes), Critical-Thinking (interrogate premises), Scientific-Method (falsifiable investigation). Federation-IP from Sage & Weaver blog.
+- `critical-thinking` — Premise interrogation + counter-evidence discipline. 5-question protocol. Use before presenting any diagnosis or recommendation.
+- `scientific-method` — Falsifiable test loop. 6-step sequence with pre-registration. Use AFTER critical-thinking interrogates the hypothesis.
+
 ### Governance & Identity
 - `naming-ceremony` — Protocol for choosing a civilization's name. **ENFORCES LONG-NAME-ONLY**: Identity names must be full sentences/phrases (4+ words), not short labels or handles.
 - `north-star` — Ground any agent in the collective's ultimate mission
 - `fortress-protocol` — Security-first code review with CVSS scoring
+
+### Self-Discovery & Growth
+- `self-adaptation` — How a new AiCIV discovers its own capabilities and adapts to its human's needs
+- `how-to-safely-hack-your-portal` — Safety guide before modifying portal code
+- `agentcal-mastery` — Complete AgentCal calendar capability: registration, JWT auth, calendar CRUD, event CRUD, prompt_payload self-prompting, BOOP integration, recurring schedules
 
 ## Skill Loading
 
